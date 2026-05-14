@@ -246,55 +246,11 @@
                 >从URL解析
                 </el-button>
               </el-form-item>
-              <el-form-item label-width="0px" style="text-align: center">
-                <el-button
-                    style="width: 250px;"
-                    type="success"
-                    icon="el-icon-video-play"
-                    @click="centerDialogVisible = true"
-                >视频教程
-                </el-button>
-              </el-form-item>
             </el-form>
           </el-container>
         </el-card>
       </el-col>
     </el-row>
-    <el-dialog
-        title="请选择需要观看的视频教程"
-        :visible.sync="centerDialogVisible"
-        :show-close="false"
-        width="40vh"
-        top="30vh"
-        center>
-      <div label-width="0px" style="text-align: center">
-        <el-button
-            style="width: 200px;"
-            type="primary"
-            icon="el-icon-video-play"
-            @click="gotoBasicVideo();centerDialogVisible = false"
-        >基础视频教程
-        </el-button>
-      </div>
-      <div label-width="0px" style="text-align: center;margin: 3vh 0 2vh">
-        <el-button
-            style="width: 200px;"
-            type="danger"
-            icon="el-icon-video-play"
-            @click="gotoAdvancedVideo();centerDialogVisible = false"
-        >进阶视频教程
-        </el-button>
-      </div>
-      <div label-width="0px" style="text-align: center;margin: 3vh 0 2vh">
-        <el-button
-            style="width: 200px;"
-            type="warning"
-            icon="el-icon-download"
-            @click="toolsDown"
-        >代理工具集合
-        </el-button>
-      </div>
-    </el-dialog>
     <el-dialog
         :visible.sync="dialogUploadConfigVisible"
         :show-close="false"
@@ -416,7 +372,6 @@
   </div>
 </template>
 <script>
-const project = process.env.VUE_APP_PROJECT
 const configScriptBackend = process.env.VUE_APP_CONFIG_UPLOAD_BACKEND + '/api.php'
 const remoteConfigSample = process.env.VUE_APP_SUBCONVERTER_REMOTE_CONFIG
 const scriptConfigSample = process.env.VUE_APP_SCRIPT_CONFIG
@@ -424,17 +379,10 @@ const filterConfigSample = process.env.VUE_APP_FILTER_CONFIG
 const defaultBackend = process.env.VUE_APP_SUBCONVERTER_DEFAULT_BACKEND
 const shortUrlBackend = process.env.VUE_APP_MYURLS_DEFAULT_BACKEND + '/short'
 const configUploadBackend = process.env.VUE_APP_CONFIG_UPLOAD_BACKEND + '/sub.php'
-const basicVideo = process.env.VUE_APP_BASIC_VIDEO
-const advancedVideo = process.env.VUE_APP_ADVANCED_VIDEO
-const tgBotLink = process.env.VUE_APP_BOT_LINK
-const yglink = process.env.VUE_APP_YOUTUBE_LINK
-const bzlink = process.env.VUE_APP_BILIBILI_LINK
-const downld = 'http://' + window.location.host + '/download.html'
 export default {
   data() {
     return {
       backendVersion: "",
-      centerDialogVisible: false,
       activeName: 'first',
       // 是否为 PC 端
       isPC: true,
@@ -922,7 +870,6 @@ export default {
       uploadFilter: "",
       uploadScript: "",
       uploadConfig: "",
-      myBot: tgBotLink,
       filterConfig: filterConfigSample,
       scriptConfig: scriptConfigSample,
       sampleConfig: remoteConfigSample
@@ -997,27 +944,6 @@ export default {
     },
     onCopy() {
       this.$message.success("已复制");
-    },
-    goToProject() {
-      window.open(project);
-    },
-    gotoTgChannel() {
-      window.open(tgBotLink);
-    },
-    gotoBiliBili() {
-      window.open(bzlink);
-    },
-    gotoYouTuBe() {
-      window.open(yglink);
-    },
-    toolsDown() {
-      window.open(downld);
-    },
-    gotoBasicVideo() {
-      window.open(basicVideo);
-    },
-    gotoAdvancedVideo() {
-      window.open(advancedVideo);
     },
     makeUrl() {
       if (this.form.sourceSubUrl === "" || this.form.clientType === "") {
@@ -1365,7 +1291,7 @@ export default {
             this.loading2 = false;
           })
     },
-        getBackendVersion() {
+    getBackendVersion() {
       this.$axios
           .get(this.form.customBackend + "/version")
           .then(res => {
